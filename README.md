@@ -30,6 +30,8 @@ _*on cluster-B*_:
 
 We will use the Red Hat Service Interconnect operator to handle our resources and the console.
 
+---
+
 ## Use case 1: Podman to k8s/OCP Cluster communication
 
 In this use case, we are going to expose a simple golang application that is showing the hostname where it is running.
@@ -44,8 +46,6 @@ The needed steps to start operating Skupper on the cluster are:
 - Initializing the site
 - Generate the secret with link configuration
 - Retrieve the secret's content to proceed on Podman site
-
----
 
 #### Site initialization
 
@@ -73,14 +73,14 @@ Proceed retrievieng the secret and we will use it to create the link with the Po
     oc get secret -o yaml redhat-site-link-cluster-A > token-cluster-A.yml
 ```
 
+---
+
 ### Skupper initialization on the VM
 
 On the VM, we will proceed by:
 
 - Initializing the Podman site
 - Establish the link with the OCP site
-
----
 
 #### Initializing the Podman site
 
@@ -98,8 +98,6 @@ And finally we establish the link between the two sites:
     skupper link create --name ocp-link token-cluster-A.yml --platform podman
 ```
 
-### Workload creation and configuration
-
 We will get a confirmation that the link is up and running:
 
 ```shell
@@ -108,35 +106,45 @@ We will get a confirmation that the link is up and running:
             Link ocp-link is connected
 ```
 
-Now we can start our container, we will use a standard _nginx_
+### Workload creation and configuration
+
+Now we can start our container. We will use a standard _nginx_ that creates a running instance on port 80 of the container.
 
 ```shell
 podman run --name nginx -d --network skupper -p docker.io/nginx
 ```
 
+Let's expose the container _nginx_ it on the skupper network with the address _podman-nginx_ listening on port _8080_ linked to container port _80_:
+
 ```shell
 skupper expose host nginx --address podman-nginx --port 8080 --target-port 80 --platform podman
-skupper service create podman-nginx 8080 --platform kubernetes
 ```
+
+The following command will create an OCP service (note the **--platform kubernetes** to switch from podman context and use the connection to the cluster) and we will expose the service, creating a Route on OCP:
 
 ```shell
+skupper service create podman-nginx 8080 --platform kubernetes
 oc expose svc/podman-nginx
 ```
-
-route.route.openshift.io/podman-nginx exposed
 
 If you now navigate to [http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/](http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/) you should be able to access the nginx instance created on the VM with Podman:
 
 ![](_assets/hello-nginx.png)
 
-OCP:
+---
+
+### Cleanup
+
+To cleanup, run the following commands:
+
+```shell
+podman rm -f nginx
 oc delete route podman-nginx
 skupper service delete podman-nginx --platform kubernetes
-
-VM:
-podman rm -f nginx
 skupper service delete podman-nginx --platform podman
 skupper link delete ocp-link --platform podman
+skupper delete --platform podman
+```
 
 ## VM service to k8s/OCP Cluster communication
 
