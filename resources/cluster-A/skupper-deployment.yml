@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: skupper-demo
+  name: hello-skupper
+spec:
+  selector:
+    matchLabels:
+      app: hello-skupper
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-skupper
+    spec:
+      containers:
+        - name: container
+          image: quay.io/kubealex/hello-skupper
+          ports:
+            - containerPort: 8080
+              protocol: TCP

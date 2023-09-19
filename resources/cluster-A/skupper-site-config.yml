@@ -2,8 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: skupper-site
+  namespace: skupper-demo
 data:
-  name: redhat-lab
+  name: redhat-lab-cluster-A
   console: "true"
   console-user: "admin"
   console-password: "redhat"

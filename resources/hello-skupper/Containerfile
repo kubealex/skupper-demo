@@ -1,0 +1,14 @@
+FROM docker.io/golang:1.19 as builder
+
+WORKDIR /app
+COPY go.mod ./
+RUN go mod download
+COPY *.go ./
+RUN CGO_ENABLED=0 GOOS=linux go build -o /hello-skupper
+
+FROM docker.io/alpine
+WORKDIR /
+COPY --from=builder /hello-skupper /hello-skupper
+EXPOSE 8080
+USER 1000
+ENTRYPOINT ["/hello-skupper"]
