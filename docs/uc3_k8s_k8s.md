@@ -77,7 +77,7 @@ oc expose service hello-skupper --context cluster-A
 
 If everything is working, we will see that the application is serving requests from cluster A, in the deployed pod:
 
-![](./_assets/cluster-A-hello-skupper.png)
+![](../_assets/cluster-A-hello-skupper.png)
 
 We can now let Skupper do the magic, and we can use the **skupper expose** command to generate the linked service on cluster B:
 
@@ -102,7 +102,7 @@ oc expose service hello-skupper --context cluster-B
 
 As you can see, the output is exactly the same, because the application served by cluster B is deployed on cluster A!
 
-![](./_assets/cluster-B-hello-skupper.png)
+![](../_assets/cluster-B-hello-skupper.png)
 
 ### Cleanup
 

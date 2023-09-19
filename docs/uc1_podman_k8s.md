@@ -97,7 +97,7 @@ oc expose svc/podman-nginx --context cluster-A
 
 If you now navigate to [http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/](http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/) you should be able to access the nginx instance created on the VM with Podman:
 
-![](_assets/hello-nginx.png)
+![](../_assets/hello-nginx.png)
 
 ---
 

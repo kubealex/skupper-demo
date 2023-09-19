@@ -45,7 +45,7 @@ The binary is in the _hello-skupper_ folder and you can launch it like this:
 
 You can then browse or cURL to _[http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/](http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/)_ and if everything is correctly configured, you'll see the following, confirming we are accessing our local application from OCP:
 
-![](_assets/hello-skupper.png)
+![](../_assets/hello-skupper.png)
 
 ### Cleanup
 
