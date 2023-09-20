@@ -3,4 +3,4 @@ kind: Secret
 metadata:
   labels:
     skupper.io/type: connection-token-request
-  name: redhat-site-link-cluster-B
+  name: redhat-site-link-cluster-b

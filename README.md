@@ -31,11 +31,19 @@ For k8s clusters you can use the skupper CLI to create a site using the **skuppe
 
 Let's set up contexts to avoid confusion and allow using a single terminal session to work with both:
 
+export OCP_API_URL_CLUSTER_A
+export OCP_USERNAME_CLUSTER_A
+export OCP_PASSWORD_CLUSTER_A
+
+export OCP_API_URL_CLUSTER_B
+export OCP_USERNAME_CLUSTER_B
+export OCP_PASSWORD_CLUSTER_B
+
 _*on cluster-A*_:
 
 ```shell
-    oc login -u OCP_USERNAME -p OCP_PASSWORD https://OCP_API_URL_CLUSTER_A:6443
-    oc config set-cluster cluster-A --server=https://OCP_API_URL_CLUSTER_A:6443 --insecure-skip-tls-verify=true
+    oc login -u $OCP_USERNAME_CLUSTER_A -p $OCP_PASSWORD_CLUSTER_A $OCP_API_URL_CLUSTER_A
+    oc config set-cluster cluster-A --server=$OCP_API_URL_CLUSTER_A --insecure-skip-tls-verify=true
     oc config set-credentials admin-cluster-A --token=$(oc whoami -t)
     oc config set-context cluster-A --cluster=cluster-A --namespace=skupper-demo --user=admin-cluster-A
 ```
@@ -43,8 +51,8 @@ _*on cluster-A*_:
 _*on cluster-B*_:
 
 ```shell
-    oc login -u OCP_USERNAME -p OCP_PASSWORD https://OCP_API_URL_CLUSTER_B:6443
-    oc config set-cluster cluster-B --server=https://OCP_API_URL_CLUSTER_B:6443 --insecure-skip-tls-verify=true
+    oc login -u $OCP_USERNAME_CLUSTER_B -p $OCP_PASSWORD_CLUSTER_B $OCP_API_URL_CLUSTER_B
+    oc config set-cluster cluster-B --server=$OCP_API_URL_CLUSTER_B --insecure-skip-tls-verify=true
     oc config set-credentials admin-cluster-B --token=$(oc whoami -t)
     oc config set-context cluster-B --cluster=cluster-B --namespace=skupper-demo --user=admin-cluster-B
 ```
