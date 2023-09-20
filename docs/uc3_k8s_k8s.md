@@ -63,7 +63,7 @@ On OCP, if you go in the Skupper console (https://skupper-skupper-demo.apps.CLUS
 
 Since we want to deploy our application on cluster A, we can use the deployment resources in the [resources folder](./resources/cluster-A/):
 
-````shell
+```shell
 oc apply -f resources/cluster-A/skupper-deployment.yml --context cluster-A
 ```
 
@@ -71,7 +71,7 @@ Then we are going to create the service on cluster A:
 
 ```shell
 oc expose deployment hello-skupper --context cluster-A --port 8080
-````
+```
 
 And finally we want to check if the application is working, so we create a route/ingress to check if all is fine:
 
