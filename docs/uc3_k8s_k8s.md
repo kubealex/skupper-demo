@@ -27,7 +27,7 @@ Followed by the same activity on cluster B:
 On cluster A, we will then issue the creation of the link configuration in a secret (_redhat-site-link_):
 
 ```shell
-    oc apply -f resources/cluster-A/skupper-site-link.yml --context cluster-A
+    oc apply -f resources/cluster-A/skupper-site-link-config.yml --context cluster-A
 ```
 
 In order to establish the link, we will then fetch the configuration from the freshly created secret and apply it to cluster B:
@@ -52,6 +52,10 @@ Links created from this site:
 
          Link redhat-site-link **not** connected
 ```
+
+On OCP, if you go in the Skupper console (https://skupper-skupper-demo.apps.CLUSTER*DOMAIN/) and log in with \_admin/redhat\* credentials, you can confirm the link is up:
+
+![](../_assets/ocp-cluster-link.png)
 
 ---
 
@@ -109,9 +113,11 @@ As you can see, the output is exactly the same, because the application served b
 To cleanup, run the following commands:
 
 ```shell
-oc delete route hello-skupper --context cluster-A
-oc delete deployment hello-skupper --context cluster-A
-skupper service delete hello-skupper --platform kubernetes --context cluster-A
+oc delete route,deployment,service hello-skupper --context cluster-A
+skupper link delete redhat-site-link --context cluster-A
+skupper link delete redhat-site-link --context cluster-B
+skupper service delete hello-skupper --context cluster-A
+skupper service delete hello-skupper --context cluster-B
 skupper delete --context cluster-A
 skupper delete --context cluster-B
 ```
