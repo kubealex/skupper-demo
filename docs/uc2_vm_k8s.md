@@ -8,7 +8,7 @@ For this section, we are going to use **cluster-A** and we will use the _skupper
 ### Configure Skupper on the VM
 
 ```shell
-skupper init --ingress none --platform podman
+skupper init --platform podman --site-name vm-site --ingress none
 skupper gateway init --type podman --platform kubernetes --context cluster-A
 ```
 
@@ -40,7 +40,7 @@ The last step is to initialize the mini-application, a simple REST endpoint that
 The binary is in the _hello-skupper_ folder and you can launch it like this:
 
 ```shell
-./hello-skupper/hello-skupper
+./resources/hello-skupper/bin/hello-skupper
 ```
 
 You can then browse or cURL to _[http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/](http://hello-skupper-skupper-demo.apps.OCP_DOMAIN/)_ and if everything is correctly configured, you'll see the following, confirming we are accessing our local application from OCP:
@@ -56,6 +56,7 @@ oc delete route hello-skupper --context cluster-A
 skupper service delete hello-skupper --platform kubernetes --context cluster-A
 skupper gateway delete --platform kubernetes --context cluster-A
 skupper delete --platform podman
+skupper delete --platform kubernetes --context cluster-A
 ```
 
 ---
